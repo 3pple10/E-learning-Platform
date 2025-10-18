@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSphere | Student Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4C6EF5;
+            --secondary: #00C4B4;
+            --background: #F9FAFB;
+            --accent: #FFC857;
+            --text: #1E1E2F;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --border-radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding: 24px 0;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 24px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 24px;
+        }
+
+        .logo h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 16px;
+        }
+
+        .nav-links li {
+            margin-bottom: 8px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links a.active {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), transparent);
+            border-left: 4px solid white;
+        }
+
+        .nav-links i {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border-radius: 50px;
+            padding: 12px 20px;
+            width: 400px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            margin-left: 12px;
+            width: 100%;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions i {
+            font-size: 20px;
+            margin-left: 20px;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            margin-left: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .course-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .course-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 16px;
+            font-size: 20px;
+        }
+
+        .course-info {
+            flex: 1;
+        }
+
+        .course-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #E5E7EB;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Progress Overview */
+        .progress-chart {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            margin: 20px 0;
+        }
+
+        .circular-progress {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0deg, #E5E7EB 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .circular-progress::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .progress-value {
+            position: relative;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Tasks */
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #D1D5DB;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+
+        .task-info {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .task-date {
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        /* Grades */
+        .grade-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .grade-item:last-child {
+            border-bottom: none;
+        }
+
+        .grade-course {
+            font-weight: 500;
+        }
+
+        .grade-score {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* AI Assistant */
+        .ai-assistant {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ai-assistant::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -40px;
+            right: -40px;
+        }
+
+        .ai-title {
+            color: white;
+        }
+
+        .ai-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .ai-message {
+            margin: 16px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .ai-button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ai-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Announcements */
+        .announcement-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .announcement-item:last-child {
+            border-bottom: none;
+        }
+
+        .announcement-title {
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .announcement-title i {
+            color: var(--accent);
+            margin-right: 8px;
+        }
+
+        .announcement-date {
+            font-size: 12px;
+            color: #6B7280;
+            margin-bottom: 8px;
+        }
+
+        .announcement-content {
+            font-size: 14px;
+            color: #4B5563;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .sidebar .logo h1, .sidebar .nav-links span {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-bar {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .top-nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-bar {
+                width: 100%;
+                margin: 16px 0;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap fa-2x"></i>
+            <h1>EduSphere</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" class="active"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
+            <li><a href="#"><i class="fas fa-book"></i> <span>My Courses</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i> <span>Progress</span></a></li>
+            <li><a href="#"><i class="fas fa-tasks"></i> <span>Assignments</span></a></li>
+            <li><a href="#"><i class="fas fa-comments"></i> <span>Chat with Advisor</span></a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search courses or topics...">
+            </div>
+            <div class="user-actions">
+                <i class="far fa-bell"></i>
+                <i class="far fa-envelope"></i>
+                <i class="fas fa-cog"></i>
+                <div class="user-avatar">JS</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- My Courses Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">My Courses</h2>
+                    <div class="card-icon" style="background: var(--primary);">
+                        <i class="fas fa-book"></i>
+                    </div>
+                </div>
+                <div class="courses-grid">
+                    <div class="course-item">
+                        <div class="course-icon" style="background: var(--primary);">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="course-info">
+                            <div class="course-name">Database Systems</div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 75%; background: var(--primary);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="course-item">
+                        <div class="course-icon" style="background: var(--secondary);">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="course-info">
+                            <div class="course-name">Web Dev Basics</div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 60%; background: var(--secondary);"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="course-item">
+                        <div class="course-icon" style="background: var(--accent);">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <div class="course-info">
+                            <div class="course-name">UI/UX Design</div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 40%; background: var(--accent);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Overview Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Progress Overview</h2>
+                    <div class="card-icon" style="background: var(--secondary);">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                </div>
+                <div class="progress-chart">
+                    <div class="circular-progress" style="background: conic-gradient(var(--primary) 252deg, #E5E7EB 0deg);">
+                        <div class="progress-value">70%</div>
+                    </div>
+                </div>
+                <p style="text-align: center; color: #6B7280;">Overall completion of all courses</p>
+            </div>
+
+            <!-- Upcoming Tasks Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Upcoming Tasks</h2>
+                    <div class="card-icon" style="background: var(--accent);">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <div class="task-checkbox"></div>
+                        <div class="task-info">
+                            <div class="task-title">Database Systems Assignment</div>
+                            <div class="task-date">Due: Tomorrow, 11:59 PM</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <div class="task-checkbox"></div>
+                        <div class="task-info">
+                            <div class="task-title">Web Dev Project Submission</div>
+                            <div class="task-date">Due: Oct 15, 11:59 PM</div>
+                        </div>
+                    </li>
+                    <li class="task-item">
+                        <div class="task-checkbox"></div>
+                        <div class="task-info">
+                            <div class="task-title">UI/UX Design Quiz</div>
+                            <div class="task-date">Due: Oct 18, 3:00 PM</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Recent Grades Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Grades</h2>
+                    <div class="card-icon" style="background: var(--primary);">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="grades-list">
+                    <div class="grade-item">
+                        <div class="grade-course">Database Systems - Assignment 3</div>
+                        <div class="grade-score">92%</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-course">Web Dev - Midterm Exam</div>
+                        <div class="grade-score">85%</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-course">UI/UX Design - Project 1</div>
+                        <div class="grade-score">88%</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-course">Database Systems - Quiz 2</div>
+                        <div class="grade-score">95%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Study Assistant Card -->
+            <div class="card ai-assistant">
+                <div class="card-header">
+                    <h2 class="card-title">AI Study Assistant</h2>
+                    <div class="card-icon ai-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                </div>
+                <p class="ai-message">Based on your progress, I recommend focusing on Database Systems this week. You have an upcoming assignment and your quiz scores are excellent!</p>
+                <button class="ai-button">Get Study Tips</button>
+            </div>
+
+            <!-- Announcements Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Announcements</h2>
+                    <div class="card-icon" style="background: var(--secondary);">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                </div>
+                <div class="announcements-list">
+                    <div class="announcement-item">
+                        <div class="announcement-title"><i class="fas fa-exclamation-circle"></i> Midterm Schedule Posted</div>
+                        <div class="announcement-date">October 5, 2023</div>
+                        <div class="announcement-content">The midterm exam schedule for all courses has been posted. Please check your course pages for details.</div>
+                    </div>
+                    <div class="announcement-item">
+                        <div class="announcement-title"><i class="fas fa-calendar-alt"></i> Holiday Break</div>
+                        <div class="announcement-date">October 2, 2023</div>
+                        <div class="announcement-content">The university will be closed from October 20-22 for the fall break. No classes or assignments due during this period.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Task completion toggle
+            const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+            taskCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('click', function() {
+                    this.style.background = this.style.background ? '' : 'var(--secondary)';
+                    this.style.borderColor = this.style.borderColor ? '' : 'var(--secondary)';
+                });
+            });
+
+            // AI Assistant button interaction
+            const aiButton = document.querySelector('.ai-button');
+            aiButton.addEventListener('click', function() {
+                const message = document.querySelector('.ai-message');
+                message.textContent = "Great! Here are personalized study tips: 1) Review SQL queries for 30 mins daily, 2) Practice joins and subqueries, 3) Complete the assignment 2 days before deadline.";
+                this.textContent = "More Tips";
+            });
+        });
+    </script>
+</body>
+</html>
